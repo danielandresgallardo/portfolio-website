@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "projects": "Proyectos",
+    "experience": "Experiencia",
+    "contact": "Contacto",
+    "marketplace": "🛍️ Tienda",
+    "language": "Idioma"
+  },
+  "hero": {
+    "title": "Ingeniero de Software y Especialista en IA",
+    "subtitle": "Estudiante de Maestría en Ciencias de la Computación e Ingeniería de Software en Constructor University Bremen. 2+ años de experiencia en la industria construyendo sistemas backend escalables, pipelines de IA y aplicaciones multi-agente.",
+    "cta_touch": "Contáctame",
+    "cta_github": "GitHub"
+  },
+  "about": {
+    "title": "Sobre Mí",
+    "bio1": "Estudiante de maestría en Ciencias de la Computación e Ingeniería de Software con 2+ años de experiencia en la industria en desarrollo backend, visión por computadora y sistemas multi-agente de IA. Competente en Python, C++, React y Flask, con implementación práctica de pipelines de LLM y marcos de pruebas automatizadas.",
+    "bio2": "Particularmente interesado en infraestructura backend, integración de IA y herramientas para desarrolladores. Me apasiona construir soluciones robustas y escalables que impulsen la ingeniería al siguiente nivel. Ganador del Hackathon GenAI de Constructor X BMW Group 2026.",
+    "education_title": "Educación",
+    "education_degree": "MS Ciencias de la Computación e Ingeniería de Software",
+    "education_school": "Constructor University, Alemania (2024-Presente)",
+    "education_bs": "BS Ciencias de la Computación e Ingeniería de Información",
+    "education_bs_school": "National Ilan University, Taiwán (GPA: 3.46/4.3)",
+    "tech_title": "Stack Tecnológico",
+    "tech_skills": "Python, C++, React, Flask, Docker, YOLO, OpenAI/Gemini",
+    "tech_spec": "Especializaciones: IA, Infraestructura Backend, DevOps"
+  },
+  "projects": {
+    "title": "Proyectos Destacados",
+    "bmw": {
+      "title": "Ganador del Hackathon BMW GenAI",
+      "date": "1er Lugar • 2026",
+      "desc": "Diseñé una plataforma multi-agente de RRHH implementando análisis de empleos potenciado por Gemini, bases de datos vectoriales de Supabase y descubrimiento iterativo de candidatos para clasificación de talento precisa."
+    },
+    "simcarma": {
+      "title": "SimCarma",
+      "date": "Proyecto de Capstone de Maestría",
+      "desc": "Desarrollé microservicios backend en Python para una plataforma de evaluación de habilidades blandas gamificada que conecta profesionales de RRHH y candidatos con análisis en tiempo real."
+    },
+    "reliability": {
+      "title": "ReliabilityRadar",
+      "date": "Pipeline de NLP",
+      "desc": "Construí un pipeline de NLP impulsado por datos utilizando Python, BeautifulSoup y Transformers, implementando análisis de sentimientos y reconocimiento de entidades nombradas para sintetizar tendencias automotrices del consumidor."
+    },
+    "pigai": {
+      "title": "Análisis Inteligente de Marcha de Cerdos",
+      "date": "Visión por Computadora",
+      "desc": "Entrené una arquitectura de visión por computadora personalizada basada en C++ YOLO para detectar y clasificar anomalías de marcha en animales a partir de telemetría de video, reduciendo significativamente los costos laborales agrícolas."
+    }
+  },
+  "experience": {
+    "title": "Experiencia Laboral",
+    "pako": {
+      "title": "Ingeniero de Software",
+      "org": "PAKO Technologies (Taipéi) • Jul 2023 - Sep 2024",
+      "desc": "Co-desarrollé un complemento de automatización en C++ para el software CAD BricsCAD, eliminando el dibujo manual y reduciendo el tiempo de flujo de trabajo. Lideré sincronizaciones semanales con ingenieros de PERI y gestione la comunicación de cliente de extremo a extremo."
+    },
+    "mindtronic": {
+      "title": "Pasante de Ingeniero de Software",
+      "org": "Mindtronic AI Co. Ltd. (Taipéi) • Jul 2022 - Sep 2022",
+      "desc": "Construí un pipeline de pruebas de precisión automatizado para un Sistema de Monitoreo de Conductores utilizando Python, React y Arduino. Diseñé secuencias de comandos de movimiento e integré uPlot para visualización de formas de onda en tiempo real."
+    },
+    "neten": {
+      "title": "Pasante de Ingeniero de Software",
+      "org": "Neten Online Consultant (Yilan) • Jul 2021 - Jun 2022",
+      "desc": "Construí un pipeline de escaneo y clasificación de documentos basado en cámaras utilizando Python y Flask. Automaticé la clasificación de documentos con reconocimiento de códigos QR y códigos de barras y flujos de procesamiento de imágenes programados."
+    }
+  },
+  "contact": {
+    "title": "Conectemos",
+    "subtitle": "Siempre estoy abierto a discutir IA, aprendizaje automático y oportunidades emocionantes.",
+    "email": "Correo",
+    "github": "GitHub",
+    "github_desc": "Mira mis proyectos",
+    "linkedin": "LinkedIn",
+    "linkedin_desc": "Perfil profesional"
+  },
+  "marketplace": {
+    "title": "🛍️ Tienda",
+    "subtitle": "Explora y compra artículos."
+  }
+}

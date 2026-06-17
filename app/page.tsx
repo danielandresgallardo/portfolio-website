@@ -1,12 +1,37 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { supabase } from '@/lib/supabase';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+
+interface Project {
+  id: string;
+  title: string;
+  date: string;
+  icon: string;
+  description: string;
+  tags: string[];
+  order_by: number;
+}
+
+interface Experience {
+  id: string;
+  title: string;
+  organization: string;
+  description: string;
+  icon: string;
+  order_by: number;
+}
 
 export default function Home() {
+  const { t } = useTranslation();
   const [isDark, setIsDark] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [experience, setExperience] = useState<Experience[]>([]);
 
   useEffect(() => {
     setMounted(true);
@@ -26,6 +51,50 @@ export default function Home() {
       localStorage.setItem('theme', 'light');
     }
   }, [isDark, mounted]);
+
+  // Fetch projects from Supabase
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .order('order_by', { ascending: true });
+
+        if (error) {
+          console.error('Error fetching projects:', error);
+        } else if (data) {
+          setProjects(data);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  // Fetch experience from Supabase
+  useEffect(() => {
+    const fetchExperience = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('experience')
+          .select('*')
+          .order('order_by', { ascending: true });
+
+        if (error) {
+          console.error('Error fetching experience:', error);
+        } else if (data) {
+          setExperience(data);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    };
+
+    fetchExperience();
+  }, []);
 
   const copyEmail = () => {
     navigator.clipboard.writeText('daniel-gallardo@live.com');
@@ -62,6 +131,7 @@ export default function Home() {
             <a href="#experience" className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Experience</a>
             <a href="#contact" className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Contact</a>
             <a href="/marketplace" className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>🛍️ Marketplace</a>
+            <LanguageSwitcher isDark={isDark} />
             <button
               onClick={() => {
                 setIsDark(!isDark);
@@ -100,6 +170,9 @@ export default function Home() {
               <a href="#experience" onClick={() => setMobileMenuOpen(false)} className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Experience</a>
               <a href="#contact" onClick={() => setMobileMenuOpen(false)} className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Contact</a>
               <a href="/marketplace" onClick={() => setMobileMenuOpen(false)} className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>🛍️ Marketplace</a>
+              <div className="pt-2 border-t border-zinc-700">
+                <LanguageSwitcher isDark={isDark} />
+              </div>
             </div>
           </div>
         )}
@@ -119,10 +192,10 @@ export default function Home() {
                 <span className="text-5xl">🏕️</span>
               </div>
               <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-tight bg-gradient-to-r from-amber-700 via-amber-600 to-orange-600 dark:from-amber-200 dark:via-yellow-200 dark:to-orange-200 bg-clip-text text-transparent">
-                Software Engineer & AI Specialist
+                {t('hero.title')}
               </h1>
               <p className={`text-lg sm:text-xl max-w-2xl leading-relaxed ${isDark ? 'text-zinc-300' : 'text-zinc-600'}`}>
-                Master's student in Computer Science & Software Engineering at Constructor University Bremen. 2+ years of industry experience building scalable backend systems, AI pipelines, and multi-agent applications.
+                {t('hero.subtitle')}
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
@@ -195,30 +268,28 @@ export default function Home() {
             <span>📍</span> Featured Projects
           </h2>
           <div className="space-y-8">
-            {[
-              { icon: '⭐', title: 'BMW GenAI Hackathon Winner', date: '1st Place • 2026', desc: 'Engineered a multi-agent HR platform implementing Gemini-powered job analysis, Supabase vector databases, and iterative candidate discovery for precision talent ranking.', tags: ['Gemini', 'Multi-Agent', 'AI'], emoji: '🏆' },
-              { icon: '🧭', title: 'SimCarma', date: 'Master\'s Capstone', desc: 'Developed Python backend microservices for a gamified soft-skill assessment platform connecting HR professionals and candidates with real-time analytics.', tags: ['Python', 'Backend', 'Microservices'] },
-              { icon: '📚', title: 'ReliabilityRadar', date: 'NLP Pipeline', desc: 'Built a data-driven NLP pipeline using Python, BeautifulSoup, and Transformers, implementing sentiment analysis and named entity recognition to synthesize consumer automotive trends.', tags: ['NLP', 'Python', 'AI'] },
-              { icon: '🐷', title: 'Intelligent Pig Gait Analysis', date: 'Computer Vision', desc: 'Trained a custom C++ YOLO-based computer vision architecture to detect and classify animal gait abnormalities from video telemetry, significantly reducing agricultural labor costs.', tags: ['YOLO', 'C++', 'OpenCV'] },
-            ].map((project, idx) => (
-              <div key={idx} className={`border-2 ${isDark ? 'border-amber-900/50 bg-zinc-900/50' : 'border-amber-200 bg-white/70'} backdrop-blur-sm rounded-lg p-8 hover:${isDark ? 'border-amber-700' : 'border-amber-400'} hover:shadow-xl transition`}>
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                      <span>{project.icon}</span> {project.title}
-                    </h3>
-                    <p className={`text-sm ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>{project.date}</p>
+            {projects.length === 0 ? (
+              <div className={isDark ? 'text-zinc-400' : 'text-zinc-600'}>Loading projects...</div>
+            ) : (
+              projects.map((project) => (
+                <div key={project.id} className={`border-2 ${isDark ? 'border-amber-900/50 bg-zinc-900/50' : 'border-amber-200 bg-white/70'} backdrop-blur-sm rounded-lg p-8 hover:border-amber-400 dark:hover:border-amber-700 hover:shadow-xl transition`}>
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
+                        <span>{project.icon}</span> {project.title}
+                      </h3>
+                      <p className={`text-sm ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>{project.date}</p>
+                    </div>
                   </div>
-                  {project.emoji && <span className="text-3xl">{project.emoji}</span>}
+                  <p className={`mb-4 leading-relaxed ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>{project.description}</p>
+                  <div className="flex gap-2 flex-wrap">
+                    {project.tags.map(tag => (
+                      <span key={tag} className={`${isDark ? 'bg-amber-900/30 text-amber-200' : 'bg-amber-100 text-amber-800'} px-3 py-1 rounded text-xs font-medium`}>{tag}</span>
+                    ))}
+                  </div>
                 </div>
-                <p className={`mb-4 leading-relaxed ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>{project.desc}</p>
-                <div className="flex gap-2 flex-wrap">
-                  {project.tags.map(tag => (
-                    <span key={tag} className={`${isDark ? 'bg-amber-900/30 text-amber-200' : 'bg-amber-100 text-amber-800'} px-3 py-1 rounded text-xs font-medium`}>{tag}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -230,19 +301,19 @@ export default function Home() {
             <span>🎒</span> Work Experience
           </h2>
           <div className="space-y-6">
-            {[
-              { icon: '💼', title: 'Software Developer', org: 'PAKO Technologies (Taipei) • Jul 2023 - Sep 2024', desc: 'Co-developed C++ automation plugin for BricsCAD CAD software, eliminating manual drafting and reducing workflow time. Led weekly syncs with PERI engineers and managed end-to-end client communication.' },
-              { icon: '🤖', title: 'Software Developer Intern', org: 'Mindtronic AI Co. Ltd. (Taipei) • Jul 2022 - Sep 2022', desc: 'Built an automated accuracy testing pipeline for Driver Monitoring System using Python, React, and Arduino. Engineered motion-command sequencing and integrated uPlot for real-time waveform visualization.' },
-              { icon: '📷', title: 'Software Developer Intern', org: 'Neten Online Consultant (Yilan) • Jul 2021 - Jun 2022', desc: 'Built a camera-based document scanning and classification pipeline using Python and Flask. Automated document filing with QR/barcode recognition and scripted image processing workflows.' },
-            ].map((exp, idx) => (
-              <div key={idx} className={`border-l-4 ${isDark ? 'border-amber-500' : 'border-amber-600'} pl-6 pb-6`}>
-                <h3 className="text-xl font-bold mb-1 flex items-center gap-2">
-                  <span>{exp.icon}</span> {exp.title}
-                </h3>
-                <p className={`text-sm mb-3 ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>{exp.org}</p>
-                <p className={isDark ? 'text-zinc-300' : 'text-zinc-700'}>{exp.desc}</p>
-              </div>
-            ))}
+            {experience.length === 0 ? (
+              <div className={isDark ? 'text-zinc-400' : 'text-zinc-600'}>Loading experience...</div>
+            ) : (
+              experience.map((exp) => (
+                <div key={exp.id} className={`border-l-4 ${isDark ? 'border-amber-500' : 'border-amber-600'} pl-6 pb-6`}>
+                  <h3 className="text-xl font-bold mb-1 flex items-center gap-2">
+                    <span>{exp.icon}</span> {exp.title}
+                  </h3>
+                  <p className={`text-sm mb-3 ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>{exp.organization}</p>
+                  <p className={isDark ? 'text-zinc-300' : 'text-zinc-700'}>{exp.description}</p>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>

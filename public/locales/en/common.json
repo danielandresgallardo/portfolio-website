@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "experience": "Experience",
+    "contact": "Contact",
+    "marketplace": "🛍️ Marketplace",
+    "language": "Language"
+  },
+  "hero": {
+    "title": "Software Engineer & AI Specialist",
+    "subtitle": "Master's student in Computer Science & Software Engineering at Constructor University Bremen. 2+ years of industry experience building scalable backend systems, AI pipelines, and multi-agent applications.",
+    "cta_touch": "Get in Touch",
+    "cta_github": "GitHub"
+  },
+  "about": {
+    "title": "About Me",
+    "bio1": "Master's student in Computer Science & Software Engineering with 2+ years of industry experience across backend development, computer vision, and multi-agent AI systems. Proficient in Python, C++, React, and Flask, with hands-on deployment of LLM pipelines and automated testing frameworks.",
+    "bio2": "Particularly interested in backend infrastructure, AI integration, and developer tooling. I'm passionate about building robust, scalable solutions that push engineering to the next level. Winner of the Constructor X BMW Group GenAI Hackathon 2026.",
+    "education_title": "Education",
+    "education_degree": "MS Computer Science & Software Engineering",
+    "education_school": "Constructor University, Germany (2024-Present)",
+    "education_bs": "BS Computer Science & Information Engineering",
+    "education_bs_school": "National Ilan University, Taiwan (GPA: 3.46/4.3)",
+    "tech_title": "Tech Stack",
+    "tech_skills": "Python, C++, React, Flask, Docker, YOLO, OpenAI/Gemini",
+    "tech_spec": "Specializations: AI, Backend Infrastructure, DevOps"
+  },
+  "projects": {
+    "title": "Featured Projects",
+    "bmw": {
+      "title": "BMW GenAI Hackathon Winner",
+      "date": "1st Place • 2026",
+      "desc": "Engineered a multi-agent HR platform implementing Gemini-powered job analysis, Supabase vector databases, and iterative candidate discovery for precision talent ranking."
+    },
+    "simcarma": {
+      "title": "SimCarma",
+      "date": "Master's Capstone",
+      "desc": "Developed Python backend microservices for a gamified soft-skill assessment platform connecting HR professionals and candidates with real-time analytics."
+    },
+    "reliability": {
+      "title": "ReliabilityRadar",
+      "date": "NLP Pipeline",
+      "desc": "Built a data-driven NLP pipeline using Python, BeautifulSoup, and Transformers, implementing sentiment analysis and named entity recognition to synthesize consumer automotive trends."
+    },
+    "pigai": {
+      "title": "Intelligent Pig Gait Analysis",
+      "date": "Computer Vision",
+      "desc": "Trained a custom C++ YOLO-based computer vision architecture to detect and classify animal gait abnormalities from video telemetry, significantly reducing agricultural labor costs."
+    }
+  },
+  "experience": {
+    "title": "Work Experience",
+    "pako": {
+      "title": "Software Developer",
+      "org": "PAKO Technologies (Taipei) • Jul 2023 - Sep 2024",
+      "desc": "Co-developed C++ automation plugin for BricsCAD CAD software, eliminating manual drafting and reducing workflow time. Led weekly syncs with PERI engineers and managed end-to-end client communication."
+    },
+    "mindtronic": {
+      "title": "Software Developer Intern",
+      "org": "Mindtronic AI Co. Ltd. (Taipei) • Jul 2022 - Sep 2022",
+      "desc": "Built an automated accuracy testing pipeline for Driver Monitoring System using Python, React, and Arduino. Engineered motion-command sequencing and integrated uPlot for real-time waveform visualization."
+    },
+    "neten": {
+      "title": "Software Developer Intern",
+      "org": "Neten Online Consultant (Yilan) • Jul 2021 - Jun 2022",
+      "desc": "Built a camera-based document scanning and classification pipeline using Python and Flask. Automated document filing with QR/barcode recognition and scripted image processing workflows."
+    }
+  },
+  "contact": {
+    "title": "Let's Connect",
+    "subtitle": "I'm always open to discussing AI, machine learning, and exciting opportunities.",
+    "email": "Email",
+    "github": "GitHub",
+    "github_desc": "Check out my projects",
+    "linkedin": "LinkedIn",
+    "linkedin_desc": "Professional profile"
+  },
+  "marketplace": {
+    "title": "🛍️ Marketplace",
+    "subtitle": "Browse and buy items."
+  }
+}

@@ -124,7 +124,7 @@ export default function Marketplace() {
       {/* Navigation */}
       <nav className={`fixed top-0 w-full ${isDark ? 'bg-zinc-950/90' : 'bg-white/90'} backdrop-blur-md border-b ${isDark ? 'border-zinc-800' : 'border-zinc-200'} z-50 transition-colors duration-300`}>
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center w-full">
-          <a href="/" className="text-xl font-bold tracking-tight hover:opacity-80 transition">⛺ Daniel Andres</a>
+          <a href="/" className="text-xl font-bold tracking-tight hover:opacity-80 transition">⛺ Daniel Andres Gallardo</a>
 
           <div className="flex sm:hidden gap-3 items-center">
             <button
