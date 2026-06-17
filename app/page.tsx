@@ -331,19 +331,25 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <div className={`${isDark ? 'bg-zinc-900/50 border-amber-900/50' : 'bg-white/70 border-amber-200'} backdrop-blur-sm border-2 rounded-lg p-8 text-center hover:${isDark ? 'border-amber-700' : 'border-amber-400'} hover:shadow-xl transition`}>
+            <div className={`${isDark ? 'bg-zinc-900/50 border-amber-900/50 hover:border-amber-700' : 'bg-white/70 border-amber-200 hover:border-amber-400'} backdrop-blur-sm border-2 rounded-lg p-8 text-center hover:shadow-xl transition`}>
               <div className="text-4xl mb-4">📧</div>
               <h3 className={`font-semibold mb-4 ${isDark ? 'text-zinc-50' : 'text-zinc-900'}`}>Email</h3>
-              <div className="flex flex-col gap-3">
-                <p className={`text-sm font-mono ${isDark ? 'text-zinc-300 bg-zinc-800/70' : 'text-zinc-700 bg-zinc-100'} p-3 rounded break-all`}>
-                  daniel-gallardo@live.com
-                </p>
+              <p className={`text-sm font-mono mb-4 ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>
+                daniel-gallardo@live.com
+              </p>
+              <div className="flex flex-col gap-2">
+                <a
+                  href="mailto:daniel-gallardo@live.com"
+                  className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold transition bg-amber-700 dark:bg-amber-600 text-white hover:bg-amber-800 dark:hover:bg-amber-500"
+                >
+                  Send Email
+                </a>
                 <button
                   onClick={copyEmail}
                   className={`inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold transition ${
                     emailCopied
                       ? isDark ? 'bg-green-900/30 text-green-200' : 'bg-green-200 text-green-800'
-                      : isDark ? 'bg-amber-900/30 text-amber-200 hover:bg-amber-900/50' : 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                      : isDark ? 'border-2 border-amber-600 text-amber-200 hover:bg-amber-900/30' : 'border-2 border-amber-700 text-amber-800 hover:bg-amber-100'
                   }`}
                 >
                   {emailCopied ? '✓ Copied!' : 'Copy Email'}
