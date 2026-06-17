@@ -1,42 +1,140 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+
 export default function Home() {
+  const [isDark, setIsDark] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const saved = localStorage.getItem('theme');
+    const dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setIsDark(dark);
+    if (dark) document.documentElement.classList.add('dark');
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDark, mounted]);
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText('daniel-gallardo@live.com');
+    setEmailCopied(true);
+    setTimeout(() => setEmailCopied(false), 2000);
+  };
+
+  const bgClass = isDark ? 'bg-zinc-950' : 'bg-amber-50';
+  const textClass = isDark ? 'text-zinc-50' : 'text-zinc-900';
+
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
+    <div className={`min-h-screen ${bgClass} ${textClass} relative overflow-hidden transition-colors duration-300`}>
+      {/* Stars Background */}
+      <div className="fixed inset-0 pointer-events-none">
+        <svg className="w-full h-full opacity-20 dark:opacity-40" viewBox="0 0 1200 800" preserveAspectRatio="none">
+          <circle cx="15%" cy="10%" r="1.5" fill="currentColor" className="text-blue-400" />
+          <circle cx="25%" cy="8%" r="1" fill="currentColor" className="text-blue-300" />
+          <circle cx="35%" cy="12%" r="1.2" fill="currentColor" className="text-blue-400" />
+          <circle cx="55%" cy="5%" r="1" fill="currentColor" className="text-blue-300" />
+          <circle cx="75%" cy="10%" r="1.5" fill="currentColor" className="text-blue-400" />
+          <circle cx="85%" cy="7%" r="1.2" fill="currentColor" className="text-blue-300" />
+          <circle cx="92%" cy="12%" r="1" fill="currentColor" className="text-blue-400" />
+        </svg>
+      </div>
+
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 z-50">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-          <h2 className="text-xl font-bold tracking-tight">Daniel Gallardo</h2>
-          <div className="flex gap-8 text-sm">
-            <a href="#projects" className="hover:text-blue-600 dark:hover:text-blue-400 transition">Projects</a>
-            <a href="#experience" className="hover:text-blue-600 dark:hover:text-blue-400 transition">Experience</a>
-            <a href="#contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition">Contact</a>
+      <nav className={`fixed top-0 w-full ${isDark ? 'bg-zinc-950/90' : 'bg-white/90'} backdrop-blur-md border-b ${isDark ? 'border-zinc-800' : 'border-zinc-200'} z-50 transition-colors duration-300`}>
+        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center w-full">
+          <h2 className="text-xl font-bold tracking-tight">⛺ Daniel Andres Gallardo</h2>
+
+          {/* Desktop Menu */}
+          <div className="hidden sm:flex gap-4 sm:gap-8 text-sm items-center">
+            <a href="#projects" className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Projects</a>
+            <a href="#experience" className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Experience</a>
+            <a href="#contact" className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Contact</a>
+            <button
+              onClick={() => {
+                setIsDark(!isDark);
+              }}
+              className={`p-2 rounded-lg transition ${isDark ? 'bg-zinc-800 hover:bg-zinc-700' : 'bg-zinc-200 hover:bg-zinc-300'}`}
+              aria-label="Toggle dark mode"
+            >
+              {isDark ? '☀️' : '🌙'}
+            </button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex sm:hidden gap-3 items-center">
+            <button
+              onClick={() => setIsDark(!isDark)}
+              className={`p-2 rounded-lg transition ${isDark ? 'bg-zinc-800 hover:bg-zinc-700' : 'bg-zinc-200 hover:bg-zinc-300'}`}
+              aria-label="Toggle dark mode"
+            >
+              {isDark ? '☀️' : '🌙'}
+            </button>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className={`p-2 rounded-lg transition ${isDark ? 'bg-zinc-800 hover:bg-zinc-700' : 'bg-zinc-200 hover:bg-zinc-300'}`}
+              aria-label="Toggle mobile menu"
+            >
+              {mobileMenuOpen ? '✕' : '☰'}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className={`sm:hidden ${isDark ? 'bg-zinc-950 border-zinc-800' : 'bg-white border-zinc-200'} border-t px-6 py-4 transition-colors duration-300`}>
+            <div className="flex flex-col gap-4 text-sm">
+              <a href="#projects" onClick={() => setMobileMenuOpen(false)} className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Projects</a>
+              <a href="#experience" onClick={() => setMobileMenuOpen(false)} className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Experience</a>
+              <a href="#contact" onClick={() => setMobileMenuOpen(false)} className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Contact</a>
+            </div>
+          </div>
+        )}
       </nav>
 
+      {/* Campfire decoration */}
+      <div className="fixed bottom-20 left-10 text-5xl opacity-30 dark:opacity-50 pointer-events-none hidden sm:block animate-pulse">
+        🔥
+      </div>
+
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
+      <section className="pt-32 pb-20 px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="space-y-8">
             <div className="space-y-4">
-              <h1 className="text-6xl md:text-7xl font-bold tracking-tight leading-tight">
-                AI & Machine Learning<br />Engineer
+              <div className="inline-block mb-4">
+                <span className="text-5xl">🏕️</span>
+              </div>
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-tight bg-gradient-to-r from-amber-700 via-amber-600 to-orange-600 dark:from-amber-200 dark:via-yellow-200 dark:to-orange-200 bg-clip-text text-transparent">
+                Software Engineer & AI Specialist
               </h1>
-              <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
-                CS Master's student at Constructor University Bremen, specializing in Artificial Intelligence. Building innovative AI solutions and exploring the future of generative AI.
+              <p className={`text-lg sm:text-xl max-w-2xl leading-relaxed ${isDark ? 'text-zinc-300' : 'text-zinc-600'}`}>
+                Master's student in Computer Science & Software Engineering at Constructor University Bremen. 2+ years of industry experience building scalable backend systems, AI pipelines, and multi-agent applications.
               </p>
             </div>
-            <div className="flex gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <a
                 href="#contact"
-                className="inline-flex items-center justify-center px-6 py-3 bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 rounded-lg font-semibold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition"
+                className="inline-flex items-center justify-center px-6 py-3 bg-amber-700 dark:bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-800 dark:hover:bg-amber-500 transition"
               >
                 Get in Touch
               </a>
               <a
-                href="https://github.com"
+                href="https://github.com/danielandresgallardo"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 border border-zinc-300 dark:border-zinc-700 rounded-lg font-semibold hover:bg-zinc-50 dark:hover:bg-zinc-900 transition"
+                className="inline-flex items-center justify-center px-6 py-3 border-2 border-amber-700 dark:border-amber-600 text-amber-700 dark:text-amber-200 rounded-lg font-semibold hover:bg-amber-50 dark:hover:bg-zinc-900 transition"
               >
                 GitHub
               </a>
@@ -45,28 +143,43 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Mountain decoration */}
+      <svg className="absolute right-0 top-96 w-32 h-32 opacity-10 dark:opacity-20 pointer-events-none" viewBox="0 0 200 200">
+        <polygon points="50,150 100,50 150,150" fill="currentColor" className="text-slate-700" />
+        <polygon points="70,150 110,80 150,150" fill="currentColor" className="text-slate-600" />
+      </svg>
+
       {/* Bio Section */}
-      <section className="py-20 px-6 bg-zinc-50 dark:bg-zinc-900/50">
+      <section className={`py-20 px-6 ${isDark ? 'bg-zinc-900/50' : 'bg-amber-50/40'} relative z-10 transition-colors duration-300`}>
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-8">About Me</h2>
+          <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
+            <span>🌲</span> About Me
+          </h2>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-4 text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
+            <div className={`space-y-4 text-lg leading-relaxed ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>
               <p>
-                I'm a passionate AI engineer with a focus on generative AI and machine learning. Currently pursuing my Master's degree in Computer Science at Constructor University Bremen, I combine theoretical knowledge with practical experience building real-world AI applications.
+                Master's student in Computer Science & Software Engineering with 2+ years of industry experience across backend development, computer vision, and multi-agent AI systems. Proficient in Python, C++, React, and Flask, with hands-on deployment of LLM pipelines and automated testing frameworks.
               </p>
               <p>
-                My interests span across natural language processing, computer vision, and innovative AI applications. I thrive on exploring how cutting-edge AI technologies can solve complex problems and create meaningful impact.
+                Particularly interested in backend infrastructure, AI integration, and developer tooling. I'm passionate about building robust, scalable solutions that push engineering to the next level. Winner of the Constructor X BMW Group GenAI Hackathon 2026.
               </p>
             </div>
-            <div className="space-y-4 text-zinc-700 dark:text-zinc-300">
-              <div className="bg-white dark:bg-zinc-800 p-6 rounded-lg">
-                <h3 className="font-semibold mb-3 text-zinc-900 dark:text-zinc-50">Education</h3>
-                <p className="text-sm">Master's in Computer Science, AI Specialization</p>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">Constructor University Bremen</p>
+            <div className="space-y-4">
+              <div className={`${isDark ? 'bg-zinc-800/70' : 'bg-white/70'} backdrop-blur-sm p-6 rounded-lg border ${isDark ? 'border-amber-900/30' : 'border-amber-200'} transition-colors duration-300`}>
+                <h3 className={`font-semibold mb-3 flex items-center gap-2 ${isDark ? 'text-zinc-50' : 'text-zinc-900'}`}>
+                  <span>🎓</span> Education
+                </h3>
+                <p className="text-sm font-semibold">MS Computer Science & Software Engineering</p>
+                <p className={`text-sm ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>Constructor University, Germany (2024-Present)</p>
+                <p className="text-sm font-semibold mt-2">BS Computer Science & Information Engineering</p>
+                <p className={`text-sm ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>National Ilan University, Taiwan (GPA: 3.46/4.3)</p>
               </div>
-              <div className="bg-white dark:bg-zinc-800 p-6 rounded-lg">
-                <h3 className="font-semibold mb-3 text-zinc-900 dark:text-zinc-50">Focus Areas</h3>
-                <p className="text-sm">Generative AI, NLP, Machine Learning, System Design</p>
+              <div className={`${isDark ? 'bg-zinc-800/70' : 'bg-white/70'} backdrop-blur-sm p-6 rounded-lg border ${isDark ? 'border-amber-900/30' : 'border-amber-200'} transition-colors duration-300`}>
+                <h3 className={`font-semibold mb-3 flex items-center gap-2 ${isDark ? 'text-zinc-50' : 'text-zinc-900'}`}>
+                  <span>⚡</span> Tech Stack
+                </h3>
+                <p className="text-sm">Python, C++, React, Flask, Docker, YOLO, OpenAI/Gemini</p>
+                <p className={`text-sm mt-2 ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>Specializations: AI, Backend Infrastructure, DevOps</p>
               </div>
             </div>
           </div>
@@ -74,152 +187,116 @@ export default function Home() {
       </section>
 
       {/* Featured Projects */}
-      <section id="projects" className="py-20 px-6">
+      <section id="projects" className="py-20 px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12">Featured Projects</h2>
+          <h2 className="text-3xl font-bold mb-12 flex items-center gap-3">
+            <span>📍</span> Featured Projects
+          </h2>
           <div className="space-y-8">
-            {/* Project 1 */}
-            <div className="group border border-zinc-200 dark:border-zinc-800 rounded-lg p-8 hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-lg dark:hover:shadow-xl dark:hover:shadow-zinc-900/50 transition">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="text-2xl font-bold mb-2">BMW GenAI Hackathon Winner</h3>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400">Winner • 2024</p>
+            {[
+              { icon: '⭐', title: 'BMW GenAI Hackathon Winner', date: '1st Place • 2026', desc: 'Engineered a multi-agent HR platform implementing Gemini-powered job analysis, Supabase vector databases, and iterative candidate discovery for precision talent ranking.', tags: ['Gemini', 'Multi-Agent', 'AI'], emoji: '🏆' },
+              { icon: '🧭', title: 'SimCarma', date: 'Master\'s Capstone', desc: 'Developed Python backend microservices for a gamified soft-skill assessment platform connecting HR professionals and candidates with real-time analytics.', tags: ['Python', 'Backend', 'Microservices'] },
+              { icon: '📚', title: 'ReliabilityRadar', date: 'NLP Pipeline', desc: 'Built a data-driven NLP pipeline using Python, BeautifulSoup, and Transformers, implementing sentiment analysis and named entity recognition to synthesize consumer automotive trends.', tags: ['NLP', 'Python', 'AI'] },
+              { icon: '🐷', title: 'Intelligent Pig Gait Analysis', date: 'Computer Vision', desc: 'Trained a custom C++ YOLO-based computer vision architecture to detect and classify animal gait abnormalities from video telemetry, significantly reducing agricultural labor costs.', tags: ['YOLO', 'C++', 'OpenCV'] },
+            ].map((project, idx) => (
+              <div key={idx} className={`border-2 ${isDark ? 'border-amber-900/50 bg-zinc-900/50' : 'border-amber-200 bg-white/70'} backdrop-blur-sm rounded-lg p-8 hover:${isDark ? 'border-amber-700' : 'border-amber-400'} hover:shadow-xl transition`}>
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
+                      <span>{project.icon}</span> {project.title}
+                    </h3>
+                    <p className={`text-sm ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>{project.date}</p>
+                  </div>
+                  {project.emoji && <span className="text-3xl">{project.emoji}</span>}
                 </div>
-                <span className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-3 py-1 rounded-full text-sm font-semibold">🏆</span>
-              </div>
-              <p className="text-zinc-700 dark:text-zinc-300 mb-4 leading-relaxed">
-                Developed an innovative generative AI solution that won the BMW GenAI Hackathon. The project showcased cutting-edge LLM applications and creative problem-solving in the automotive AI space.
-              </p>
-              <div className="flex gap-2 flex-wrap">
-                <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 px-3 py-1 rounded text-xs font-medium">LLM</span>
-                <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 px-3 py-1 rounded text-xs font-medium">Generative AI</span>
-                <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 px-3 py-1 rounded text-xs font-medium">Innovation</span>
-              </div>
-            </div>
-
-            {/* Project 2 */}
-            <div className="group border border-zinc-200 dark:border-zinc-800 rounded-lg p-8 hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-lg dark:hover:shadow-xl dark:hover:shadow-zinc-900/50 transition">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="text-2xl font-bold mb-2">SimCarma</h3>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400">Personal Project</p>
+                <p className={`mb-4 leading-relaxed ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>{project.desc}</p>
+                <div className="flex gap-2 flex-wrap">
+                  {project.tags.map(tag => (
+                    <span key={tag} className={`${isDark ? 'bg-amber-900/30 text-amber-200' : 'bg-amber-100 text-amber-800'} px-3 py-1 rounded text-xs font-medium`}>{tag}</span>
+                  ))}
                 </div>
               </div>
-              <p className="text-zinc-700 dark:text-zinc-300 mb-4 leading-relaxed">
-                A sophisticated simulation and analysis platform built to explore complex systems and machine learning applications. Features advanced visualization, data processing pipelines, and real-time analysis capabilities.
-              </p>
-              <div className="flex gap-2 flex-wrap">
-                <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 px-3 py-1 rounded text-xs font-medium">Python</span>
-                <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 px-3 py-1 rounded text-xs font-medium">Simulation</span>
-                <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200 px-3 py-1 rounded text-xs font-medium">Data Science</span>
-              </div>
-            </div>
-
-            {/* Project 3 */}
-            <div className="group border border-zinc-200 dark:border-zinc-800 rounded-lg p-8 hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-lg dark:hover:shadow-xl dark:hover:shadow-zinc-900/50 transition">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="text-2xl font-bold mb-2">Entity Recognition Thesis</h3>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400">Research Project</p>
-                </div>
-              </div>
-              <p className="text-zinc-700 dark:text-zinc-300 mb-4 leading-relaxed">
-                Comprehensive research thesis on advanced entity recognition techniques using deep learning. Explores novel architectures and training methodologies for improving NLP model accuracy and efficiency.
-              </p>
-              <div className="flex gap-2 flex-wrap">
-                <span className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 px-3 py-1 rounded text-xs font-medium">NLP</span>
-                <span className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 px-3 py-1 rounded text-xs font-medium">Deep Learning</span>
-                <span className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 px-3 py-1 rounded text-xs font-medium">Research</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-20 px-6 bg-zinc-50 dark:bg-zinc-900/50">
+      <section id="experience" className={`py-20 px-6 ${isDark ? 'bg-zinc-900/30' : 'bg-amber-50/40'} relative z-10 transition-colors duration-300`}>
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12">Work Experience</h2>
-          <div className="space-y-8">
-            {/* Experience 1 */}
-            <div className="border-l-2 border-blue-500 pl-8">
-              <h3 className="text-xl font-bold mb-1">AI & Machine Learning Focus</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">Constructor University Bremen • Current</p>
-              <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                Advanced studies in AI and machine learning, with hands-on experience in generative models, NLP, and practical AI applications. Actively developing real-world solutions and contributing to research initiatives.
-              </p>
-            </div>
-
-            {/* Experience 2 */}
-            <div className="border-l-2 border-purple-500 pl-8">
-              <h3 className="text-xl font-bold mb-1">Hackathon Winner - BMW GenAI</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">2024</p>
-              <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                Led the development of a winning AI solution in a competitive hackathon environment. Demonstrated rapid prototyping, innovative problem-solving, and effective team collaboration under time constraints.
-              </p>
-            </div>
-
-            {/* Experience 3 */}
-            <div className="border-l-2 border-green-500 pl-8">
-              <h3 className="text-xl font-bold mb-1">Research & Development</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">Various Projects • Ongoing</p>
-              <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                Engaged in cutting-edge research across NLP, computer vision, and generative AI. Published findings and actively contributed to the advancement of AI technologies through rigorous experimentation and analysis.
-              </p>
-            </div>
+          <h2 className="text-3xl font-bold mb-12 flex items-center gap-3">
+            <span>🎒</span> Work Experience
+          </h2>
+          <div className="space-y-6">
+            {[
+              { icon: '💼', title: 'Software Developer', org: 'PAKO Technologies (Taipei) • Jul 2023 - Sep 2024', desc: 'Co-developed C++ automation plugin for BricsCAD CAD software, eliminating manual drafting and reducing workflow time. Led weekly syncs with PERI engineers and managed end-to-end client communication.' },
+              { icon: '🤖', title: 'Software Developer Intern', org: 'Mindtronic AI Co. Ltd. (Taipei) • Jul 2022 - Sep 2022', desc: 'Built an automated accuracy testing pipeline for Driver Monitoring System using Python, React, and Arduino. Engineered motion-command sequencing and integrated uPlot for real-time waveform visualization.' },
+              { icon: '📷', title: 'Software Developer Intern', org: 'Neten Online Consultant (Yilan) • Jul 2021 - Jun 2022', desc: 'Built a camera-based document scanning and classification pipeline using Python and Flask. Automated document filing with QR/barcode recognition and scripted image processing workflows.' },
+            ].map((exp, idx) => (
+              <div key={idx} className={`border-l-4 ${isDark ? 'border-amber-500' : 'border-amber-600'} pl-6 pb-6`}>
+                <h3 className="text-xl font-bold mb-1 flex items-center gap-2">
+                  <span>{exp.icon}</span> {exp.title}
+                </h3>
+                <p className={`text-sm mb-3 ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>{exp.org}</p>
+                <p className={isDark ? 'text-zinc-300' : 'text-zinc-700'}>{exp.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 px-6">
+      <section id="contact" className="py-20 px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Let's Connect</h2>
-            <p className="text-xl text-zinc-600 dark:text-zinc-400">
+            <h2 className="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
+              <span>🔥</span> Let's Connect <span>🏕️</span>
+            </h2>
+            <p className={`text-lg ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>
               I'm always open to discussing AI, machine learning, and exciting opportunities.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <a
-              href="mailto:daniel-gallardo@live.com"
-              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-8 text-center hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-lg transition"
-            >
-              <div className="text-3xl mb-4">✉️</div>
-              <h3 className="font-semibold mb-2">Email</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 break-all">daniel-gallardo@live.com</p>
+            <div className={`${isDark ? 'bg-zinc-900/50 border-amber-900/50' : 'bg-white/70 border-amber-200'} backdrop-blur-sm border-2 rounded-lg p-8 text-center hover:${isDark ? 'border-amber-700' : 'border-amber-400'} hover:shadow-xl transition`}>
+              <div className="text-4xl mb-4">📧</div>
+              <h3 className={`font-semibold mb-4 ${isDark ? 'text-zinc-50' : 'text-zinc-900'}`}>Email</h3>
+              <div className="flex flex-col gap-3">
+                <p className={`text-sm font-mono ${isDark ? 'text-zinc-300 bg-zinc-800/70' : 'text-zinc-700 bg-zinc-100'} p-3 rounded break-all`}>
+                  daniel-gallardo@live.com
+                </p>
+                <button
+                  onClick={copyEmail}
+                  className={`inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold transition ${
+                    emailCopied
+                      ? isDark ? 'bg-green-900/30 text-green-200' : 'bg-green-200 text-green-800'
+                      : isDark ? 'bg-amber-900/30 text-amber-200 hover:bg-amber-900/50' : 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                  }`}
+                >
+                  {emailCopied ? '✓ Copied!' : 'Copy Email'}
+                </button>
+              </div>
+            </div>
+
+            <a href="https://github.com/danielandresgallardo" target="_blank" rel="noopener noreferrer" className={`${isDark ? 'bg-zinc-900/50 border-amber-900/50' : 'bg-white/70 border-amber-200'} backdrop-blur-sm border-2 rounded-lg p-8 text-center hover:${isDark ? 'border-amber-700' : 'border-amber-400'} hover:shadow-xl transition`}>
+              <div className="text-4xl mb-4">💻</div>
+              <h3 className={`font-semibold mb-2 ${isDark ? 'text-zinc-50' : 'text-zinc-900'}`}>GitHub</h3>
+              <p className={`text-sm ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>Check out my projects</p>
             </a>
 
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-8 text-center hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-lg transition"
-            >
-              <div className="text-3xl mb-4">💻</div>
-              <h3 className="font-semibold mb-2">GitHub</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Check out my projects</p>
-            </a>
-
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-8 text-center hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-lg transition"
-            >
-              <div className="text-3xl mb-4">🔗</div>
-              <h3 className="font-semibold mb-2">LinkedIn</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Professional profile</p>
+            <a href="https://www.linkedin.com/in/daniel-andres-gallardo/" target="_blank" rel="noopener noreferrer" className={`${isDark ? 'bg-zinc-900/50 border-amber-900/50' : 'bg-white/70 border-amber-200'} backdrop-blur-sm border-2 rounded-lg p-8 text-center hover:${isDark ? 'border-amber-700' : 'border-amber-400'} hover:shadow-xl transition`}>
+              <div className="text-4xl mb-4">🔗</div>
+              <h3 className={`font-semibold mb-2 ${isDark ? 'text-zinc-50' : 'text-zinc-900'}`}>LinkedIn</h3>
+              <p className={`text-sm ${isDark ? 'text-zinc-400' : 'text-zinc-600'}`}>Professional profile</p>
             </a>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-200 dark:border-zinc-800 py-8 px-6">
+      <footer className={`border-t ${isDark ? 'border-amber-900/30 bg-slate-900/30' : 'border-amber-200 bg-amber-50/30'} py-8 px-6 relative z-10 transition-colors duration-300`}>
         <div className="max-w-4xl mx-auto text-center text-sm text-zinc-600 dark:text-zinc-400">
-          <p>© 2024 Daniel Gallardo. All rights reserved.</p>
+          <p>© 2026 Daniel Andres Gallardo. Built with Next.js, React & Tailwind. ⛺</p>
         </div>
       </footer>
     </div>
