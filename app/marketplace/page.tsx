@@ -215,81 +215,86 @@ export default function Marketplace() {
       {selectedItem && !showMessageForm && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedItem(null)}>
           <div
-            className={`${isDark ? 'bg-zinc-900' : 'bg-white'} rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto`}
+            className={`${isDark ? 'bg-zinc-900' : 'bg-white'} rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col relative`}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Image Slideshow */}
-            <div className="relative aspect-square bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
-              {selectedItem.images && selectedItem.images.length > 0 ? (
-                <>
-                  <img
-                    src={selectedItem.images[currentImageIndex]}
-                    alt={selectedItem.title}
-                    className="w-full h-full object-cover"
-                  />
-                  {selectedItem.images.length > 1 && (
-                    <>
-                      <button
-                        onClick={() =>
-                          setCurrentImageIndex((prev) =>
-                            prev === 0 ? selectedItem.images.length - 1 : prev - 1
-                          )
-                        }
-                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
-                      >
-                        ❮
-                      </button>
-                      <button
-                        onClick={() =>
-                          setCurrentImageIndex((prev) =>
-                            prev === selectedItem.images.length - 1 ? 0 : prev + 1
-                          )
-                        }
-                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
-                      >
-                        ❯
-                      </button>
-                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                        {selectedItem.images.map((_, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => setCurrentImageIndex(idx)}
-                            className={`w-2 h-2 rounded-full transition ${
-                              idx === currentImageIndex ? 'bg-white' : 'bg-white/50'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </>
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-6xl">📦</div>
-              )}
-            </div>
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedItem(null)}
+              className="absolute top-4 right-4 z-10 text-2xl hover:opacity-70 transition"
+            >
+              ✕
+            </button>
 
-            {/* Item Details */}
-            <div className="p-6">
-              <h2 className="text-3xl font-bold mb-2">{selectedItem.title}</h2>
-              <p className="text-2xl font-bold text-amber-600 dark:text-amber-400 mb-4">
-                ${selectedItem.price.toFixed(2)}
-              </p>
-              <p className={`${isDark ? 'text-zinc-300' : 'text-zinc-700'} mb-6`}>
-                {selectedItem.description}
-              </p>
+            {/* Image and Details Container */}
+            <div className="flex flex-col lg:flex-row gap-6 p-6 flex-1 overflow-hidden">
+              {/* Image Slideshow */}
+              <div className="flex-shrink-0 w-full lg:w-80 h-80 bg-zinc-200 dark:bg-zinc-800 overflow-hidden rounded-lg relative">
+                {selectedItem.images && selectedItem.images.length > 0 ? (
+                  <>
+                    <img
+                      src={selectedItem.images[currentImageIndex]}
+                      alt={selectedItem.title}
+                      className="w-full h-full object-cover"
+                    />
+                    {selectedItem.images.length > 1 && (
+                      <>
+                        <button
+                          onClick={() =>
+                            setCurrentImageIndex((prev) =>
+                              prev === 0 ? selectedItem.images.length - 1 : prev - 1
+                            )
+                          }
+                          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
+                        >
+                          ❮
+                        </button>
+                        <button
+                          onClick={() =>
+                            setCurrentImageIndex((prev) =>
+                              prev === selectedItem.images.length - 1 ? 0 : prev + 1
+                            )
+                          }
+                          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
+                        >
+                          ❯
+                        </button>
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                          {selectedItem.images.map((_, idx) => (
+                            <button
+                              key={idx}
+                              onClick={() => setCurrentImageIndex(idx)}
+                              className={`w-2 h-2 rounded-full transition ${
+                                idx === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-6xl">📦</div>
+                )}
+              </div>
 
-              <div className="flex gap-3">
+              {/* Item Details */}
+              <div className="flex-1 overflow-y-auto pr-4 flex flex-col">
+                <div>
+                  <h2 className="text-3xl font-bold mb-2">{selectedItem.title}</h2>
+                  <p className="text-2xl font-bold text-amber-600 dark:text-amber-400 mb-4">
+                    ${selectedItem.price.toFixed(2)}
+                  </p>
+                  <p className={`${isDark ? 'text-zinc-300' : 'text-zinc-700'} mb-6`}>
+                    {selectedItem.description}
+                  </p>
+                </div>
+
                 <button
                   onClick={() => setShowMessageForm(true)}
-                  className="flex-1 bg-amber-700 dark:bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-800 dark:hover:bg-amber-500 transition"
+                  className="mt-auto w-full bg-amber-700 dark:bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-800 dark:hover:bg-amber-500 transition"
                 >
                   Send Message
-                </button>
-                <button
-                  onClick={() => setSelectedItem(null)}
-                  className={`flex-1 border-2 ${isDark ? 'border-zinc-700 hover:bg-zinc-800' : 'border-zinc-300 hover:bg-zinc-100'} py-3 rounded-lg font-semibold transition`}
-                >
-                  Close
                 </button>
               </div>
             </div>
