@@ -61,6 +61,7 @@ export default function Home() {
             <a href="#projects" className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Projects</a>
             <a href="#experience" className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Experience</a>
             <a href="#contact" className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Contact</a>
+            <a href="/marketplace" className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>🛍️ Marketplace</a>
             <button
               onClick={() => {
                 setIsDark(!isDark);
@@ -98,6 +99,7 @@ export default function Home() {
               <a href="#projects" onClick={() => setMobileMenuOpen(false)} className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Projects</a>
               <a href="#experience" onClick={() => setMobileMenuOpen(false)} className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Experience</a>
               <a href="#contact" onClick={() => setMobileMenuOpen(false)} className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>Contact</a>
+              <a href="/marketplace" onClick={() => setMobileMenuOpen(false)} className={isDark ? 'hover:text-amber-200' : 'hover:text-amber-700'}>🛍️ Marketplace</a>
             </div>
           </div>
         )}
